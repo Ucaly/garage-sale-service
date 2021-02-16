@@ -2,8 +2,8 @@ import os
 from flask import Flask, abort, json, jsonify, request
 from flask_migrate import Migrate
 from flask_cors import CORS
-from models import WaitingList, db, SaleItem, User
-from auth import AuthError, requires_auth
+from .models import WaitingList, db, SaleItem, User
+from .auth import AuthError, requires_auth
 
 def create_app(test_config=None):
     app= Flask(__name__)
