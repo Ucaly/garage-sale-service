@@ -29,8 +29,8 @@ def create_app(test_config=None):
         return response
 
     @app.route('/saleitems', methods=['GET'])
-    @requires_auth('get:saleitems')
-    def get_saleitems(payload):
+    # @requires_auth('get:saleitems')
+    def get_saleitems():
         '''
         GET /saleitems
         All permissions
@@ -179,7 +179,8 @@ def create_app(test_config=None):
                 item_to_buy.status = 1
                 item_to_buy.update()
             return jsonify({
-                'success': True
+                'success': True,
+                'updated_saleitem_id':item_id
             })
         except Exception as e:
             print(f'Exception occured: {e}')
@@ -255,22 +256,22 @@ def create_app(test_config=None):
             print(f'Exceptioin {e}')
             abort(422)
 
-    # @app.route('/users/<int:user_id>', methods=['DELETE'])
-    # @requires_auth('delete:user')
-    # def delete_user(payload, user_id):
-    #     if user_id is None:
-    #         abort(400)
-    #     user_to_delete = User.query.filter(User.id == user_id).first_or_404()
+    @app.route('/users/<int:user_id>', methods=['DELETE'])
+    @requires_auth('delete:user')
+    def delete_user(payload, user_id):
+        if user_id is None:
+            abort(400)
+        user_to_delete = User.query.filter(User.id == user_id).first_or_404()
 
-    #     try:
-    #         user_to_delete.delete()
-    #         return jsonify({
-    #             'success': True,
-    #             'deleted': user_id
-    #         })
-    #     except Exception as e:
-    #         print(f'Exception {e}')
-    #         abort(422)
+        try:
+            user_to_delete.delete()
+            return jsonify({
+                'success': True,
+                'deleted': user_id
+            })
+        except Exception as e:
+            print(f'Exception {e}')
+            abort(422)
     
     @app.route('/users/<int:user_id>', methods=['PATCH'])
     @requires_auth('patch:user')
@@ -299,23 +300,6 @@ def create_app(test_config=None):
         except Exception as e:
             print(f'Exception {e}')
             abort(422)
-
-    # @app.route('/get_user', methods=['POST'])
-    # @requires_auth('get:user')
-    # def get_user(payload):
-    #     body = request.get_json()
-    #     user_email = body.get('email')
-    #     if user_email is None:
-    #         abort(400)
-    #     try:
-    #         user = User.query.filter(User.email == user_email).first()
-    #         return jsonify({
-    #             'success': True,
-    #             'user': user
-    #         })
-    #     except Exception as e:
-    #         print(f'Exception {e}')
-    #         abort(422)
         
     @app.route('/')
     def index():
