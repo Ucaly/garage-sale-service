@@ -4,7 +4,7 @@ import json
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from app import create_app
-from models import SaleItem, User
+from app.models import SaleItem, User
 from test_data import SELLER_TOKEN, BUYER_TOKEN
 class GarageSaleTestCase(unittest.TestCase):
     """
