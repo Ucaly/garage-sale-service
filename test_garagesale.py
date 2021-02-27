@@ -6,6 +6,8 @@ from flask_cors import CORS
 from app import create_app
 from app.models import SaleItem, User, setup_db
 
+unittest.TestLoader.sortTestMethodsUsing = None
+
 class GarageSaleTestCase(unittest.TestCase):
     """
     python -m unittest discover -s .
@@ -22,13 +24,6 @@ class GarageSaleTestCase(unittest.TestCase):
         self.database_name = db_name
         self.database_path = db_path
         setup_db(self.app, self.database_path)
-        
-
-        # with self.app.app_context():
-        #     self.db = SQLAlchemy(self.app)
-        #     self.db.app = self.app
-        #     self.db.init_app(self.app)
-        #     self.db.create_all()
         
         seller_token = os.environ.get('SELLER_TOKEN')
         buyer_token = os.environ.get('BUYER_TOKEN')
@@ -51,14 +46,6 @@ class GarageSaleTestCase(unittest.TestCase):
         self.assertEqual(len(data['saleitems']), 7)
         self.assertEqual(data['total_saleitems'], 7)
 
-    """ TEST: @app.route('/saleitems', methods=['GET']) """
-    # def test_get_saleitems_401(self):
-    #     res = self.client().get('/saleitems')
-    #     print(res)
-    #     data = json.loads(res.data)
-
-    #     self.assertEqual(res.status_code, 401)
-
     """ TEST: @app.route('/saleitems/<int:item_id>', methods=['GET']) """
     def test_get_saleitem(self):
         res = self.client().get('/saleitems/1', headers=self.buyer_headers)
@@ -67,7 +54,7 @@ class GarageSaleTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertEqual(data['item']['name'], 'Small plates')
-        self.assertEqual(len(data['buyers']), 0)
+        self.assertEqual(len(data['buyers']),0)
 
     """ TEST: @app.route('/saleitems/<int:item_id>', methods=['GET']) """
     def test_get_saleitem_404(self):
@@ -76,43 +63,6 @@ class GarageSaleTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 404) 
 
-    """ TEST: @app.route('/users', methods=['GET']) """
-    def test_get_users(self):
-        res = self.client().get('/users', headers=self.seller_headers)
-        print(res)
-        data = json.loads(res.data)
-
-        self.assertEqual(res.status_code, 200)
-        self.assertEqual(data['success'], True)
-        self.assertEqual(len(data['users']), 3)
-        self.assertEqual(data['total_users'], 3)
-
-    """ TEST: @app.route('/users', methods=['GET']) """
-    def test_get_users_403(self):
-        res = self.client().get('/users', headers=self.buyer_headers)
-        print(res)
-        data = json.loads(res.data)
-
-        self.assertEqual(res.status_code, 403)  
-
-    """ TEST: @app.route('/users/<int:user_id>', methods=['GET']) """
-    def test_get_user(self):
-        res = self.client().get('/users/1', headers=self.seller_headers)
-        print(res)
-        data = json.loads(res.data)
-
-        self.assertEqual(res.status_code, 200)
-        self.assertEqual(data['success'], True)
-        self.assertEqual(len(data['items']), 1)
-        self.assertEqual(data['user']['nickname'], 'takepon') 
-
-    """ TEST: @app.route('/users/<int:user_id>', methods=['GET']) """
-    def test_get_user_404(self):
-        res = self.client().get('/users/77', headers=self.seller_headers)
-        print(res)
-        data = json.loads(res.data)
-
-        self.assertEqual(res.status_code, 404)
 
     """ TEST: @app.route('/saleitems', methods=['POST']) """
     def test_post_saleitems(self):
@@ -150,6 +100,48 @@ class GarageSaleTestCase(unittest.TestCase):
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 404)
 
+    """ TEST: @app.route('/saleitems', methods=['POST']) """
+    def test_post_saleitems_missing_data(self):
+        post_data = {
+            "name": "Test item 1",
+            "image": "https://picsum.photos/400/600",
+            "description": "This is a test item and price is 200"
+        }
+        res = self.client().post('/saleitems', json=post_data, headers=self.seller_headers)
+
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 400)
+
+    """ TEST:@app.route('/saleitems/<int:item_id>/buy', methods=['POST']) """
+    def test_buy_item(self):
+        post_data = {
+            "user_id": 1,
+        }
+        res = self.client().post('/saleitems/2/buy', json=post_data, headers=self.buyer_headers)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['updated_saleitem_id'], 2)
+
+    """ TEST:@app.route('/saleitems/<int:item_id>/buy', methods=['POST']) """
+    def test_buy_item_missing_userid(self):
+        post_data = {"item_id": 5}
+        res = self.client().post('/saleitems/3/buy', json=post_data, headers=self.buyer_headers)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 400)
+
+    """ TEST: @app.route('/users', methods=['GET']) """
+    def test_get_users(self):
+        res = self.client().get('/users', headers=self.seller_headers)
+        print(res)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertEqual(len(data['users']), 3)
+        self.assertEqual(data['total_users'], 3)
+
     """ TEST: @app.route('/saleitems/<int:item_id>', methods=['DELETE']) """
     def test_delete_saleitem_error(self):
         res = self.client().delete('/saleitems/91', headers=self.seller_headers)
@@ -164,17 +156,32 @@ class GarageSaleTestCase(unittest.TestCase):
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
 
-    """ TEST: @app.route('/saleitems', methods=['POST']) """
-    def test_post_saleitems_missing_data(self):
-        post_data = {
-            "name": "Test item 1",
-            "image": "https://picsum.photos/400/600",
-            "description": "This is a test item and price is 200"
-        }
-        res = self.client().post('/saleitems', json=post_data, headers=self.seller_headers)
-
+    """ TEST: @app.route('/users', methods=['GET']) """
+    def test_get_users_403(self):
+        res = self.client().get('/users', headers=self.buyer_headers)
+        print(res)
         data = json.loads(res.data)
-        self.assertEqual(res.status_code, 400)
+
+        self.assertEqual(res.status_code, 403)  
+
+    """ TEST: @app.route('/users/<int:user_id>', methods=['GET']) """
+    def test_get_user(self):
+        res = self.client().get('/users/2', headers=self.seller_headers)
+        print(res)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertEqual(len(data['items']), 0)
+        self.assertEqual(data['user']['name'], 'Aman') 
+
+    """ TEST: @app.route('/users/<int:user_id>', methods=['GET']) """
+    def test_get_user_404(self):
+        res = self.client().get('/users/77', headers=self.seller_headers)
+        print(res)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
 
     """ TEST: @app.route('/users', methods=['POST']) """
     def test_post_users(self):
@@ -210,7 +217,7 @@ class GarageSaleTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['user']['nickname'], 'tester1+')  
+        self.assertEqual(data['updated'], 2)  
 
     """ TEST: @app.route('/users/<int:user_id>', methods=['PATCH']) """
     def test_patch_user_error(self):
@@ -236,22 +243,3 @@ class GarageSaleTestCase(unittest.TestCase):
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
-
-    """ TEST:@app.route('/saleitems/<int:item_id>/buy', methods=['POST']) """
-    def test_buy_item(self):
-        post_data = {
-            "user_id": 1,
-        }
-        res = self.client().post('/saleitems/1/buy', json=post_data, headers=self.buyer_headers)
-        data = json.loads(res.data)
-
-        self.assertEqual(res.status_code, 200)
-        self.assertEqual(data['updated_saleitem_id'], 1)
-
-    """ TEST:@app.route('/saleitems/<int:item_id>/buy', methods=['POST']) """
-    def test_buy_item_missing_userid(self):
-        post_data = {}
-        res = self.client().post('/saleitems/1/buy', json=post_data, headers=self.buyer_headers)
-        data = json.loads(res.data)
-
-        self.assertEqual(res.status_code, 400)

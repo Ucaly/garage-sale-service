@@ -305,22 +305,6 @@ def create_app(test_config=None):
     def index():
         return 'WELCOME TO GARAGESALE'
 
-    @app.errorhandler(401)
-    def invalid_permission(error):
-        return jsonify({
-            "success": False,
-            "error": 401,
-            "message": error.description
-        }), 401
-
-    @app.errorhandler(403)
-    def unauthorized(error):
-        return jsonify({
-            "success": False,
-            "error": 403,
-            "message": error.description
-        }), 403
-
     @app.errorhandler(404)
     def not_found(error):
         return jsonify({
@@ -344,6 +328,12 @@ def create_app(test_config=None):
         "error": 400,
         "message": "bad request"
         }), 400
+
+    @app.errorhandler(AuthError)
+    def handle_auth_error(ex):
+        response = jsonify(ex.error)
+        response.status_code = ex.status_code
+        return response
 
     @app.errorhandler(500)
     def server_error(error):

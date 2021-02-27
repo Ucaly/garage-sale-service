@@ -74,10 +74,11 @@ In order to run tests, navigate to root directory and run the following commands
 ```
 source setup.sh
 createdb garagesale
+python manage.py db upgrade
 psql garagesale < garagesale.psql
 ```
 
 Finally run tests:
 ```
-python test_garagesale.py
+python test_suite.py
 ```
