@@ -33,8 +33,11 @@ This will install all of the required packages within the `requirements.txt` fil
 - [Flask-CORS](https://flask-cors.readthedocs.io/en/latest/#) is the extension we'll use to handle cross origin requests from our frontend server. 
 
 ## Database Setup
-With Postgres running, restore a database using the garagesale.psql file provided. From the backend folder in terminal run:
+To setup database locally, replace with your db user for `DB_USESRNAME` in setup.sh.  With Postgres running, create a database named `garagesale`. Run migration scripts to populate tables.  Feed sample data using the garagesale.psql file provided. From the root directory in terminal run:
 ```bash
+source setup.sh
+createdb garagesale
+python manage.py db upgrade
 psql garagesale < garagesale.psql
 ```
 
@@ -51,7 +54,7 @@ flask run
 
 If running locally on Windows, refer to [Flask documentation](https://flask.palletsprojects.com).
 
-The service is run on http://127.0.0.1:5000 locally by default.  This URL is set as a proxy in the frontend configuration.
+The service is run on http://127.0.0.1:5000 locally by default.
 
 ### Frontend
 
@@ -66,19 +69,20 @@ By default, the frontend will run on https://127.0.0.1:3000.
 
 ## Testing
 
-Open 'setup.sh' file and update the database user name for DB_USESRNAME as per your environment. Create a test database. 
+To run unit tests locally, re-create local database.  Open 'setup.sh' file and update the database user name for DB_USESRNAME as per your environment. Drop existing database then create a new one. 
 Dump the sample psql file using the command 'psql garagesale_test < test_garagesale.psql'
 Export environment variables by running the setup.sh file:
 
-In order to run tests, navigate to root directory and run the following commands to setup test database:
+Bavigate to the project root directory and run the following commands to setup test database:
 ```
 source setup.sh
+dropdb gragesale
 createdb garagesale
 python manage.py db upgrade
 psql garagesale < garagesale.psql
 ```
 
-Finally run tests:
+Finally execute tests:
 ```
 python test_suite.py
 ```
