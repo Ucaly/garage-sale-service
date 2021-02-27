@@ -35,8 +35,7 @@ class GarageSaleTestCase(unittest.TestCase):
         self.seller_headers = [('Content-Type', 'application/json'),
                                 ('Authorization', f'Bearer {seller_token}')]
         self.buyer_headers = [('Content-Type', 'application/json'),
-                                ('Authorization', f'Bearer {buyer_token}')]
-        
+                                ('Authorization', f'Bearer {buyer_token}')]    
         
     def tearDown(self) -> None:
         pass
@@ -196,7 +195,7 @@ class GarageSaleTestCase(unittest.TestCase):
             "name": "Test user 1",
             "nickname": "tester1",
         }
-        res = self.client().post('/users', json=post_data, headers=self.buyer_headers)
+        res = self.client().post('/users', json=post_data, headers=self.seller_headers)
 
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 400)
@@ -206,7 +205,7 @@ class GarageSaleTestCase(unittest.TestCase):
         patch_data = {
             "nickname": "tester1+",
         }
-        res = self.client().patch('/users/2', json=patch_data, headers=self.buyer_headers)
+        res = self.client().patch('/users/2', json=patch_data, headers=self.seller_headers)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -218,7 +217,7 @@ class GarageSaleTestCase(unittest.TestCase):
         patch_data = {
             "nickname": "tester1+",
         }
-        res = self.client().patch('/users/200', json=patch_data, headers=self.buyer_headers)
+        res = self.client().patch('/users/200', json=patch_data, headers=self.seller_headers)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
