@@ -1,6 +1,6 @@
 # Garage Sale service
 
-This project is designed for an individual who wants to sell own items online.  
+This project is designed for an individual who wants to sell own items online.
 
 ## Getting Started
 
@@ -12,17 +12,17 @@ Follow instructions to install the latest version of python for your platform in
 
 #### Virtual Enviornment
 
-We recommend working within a virtual environment whenever using Python for projects. This keeps your dependencies for each project separate and organaized. Instructions for setting up a virual enviornment for your platform can be found in the [python docs](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
+Setting up a virtual environment is recommended. Instructions for setting up a virual enviornment can be found in the [python docs](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
 
 #### PIP Dependencies
 
-Once you have your virtual environment setup and running, install dependencies by naviging to the `/backend` directory and running:
+Once virtual environment setup and running, install dependencies by running:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-This will install all of the required packages we selected within the `requirements.txt` file.
+This will install all of the required packages within the `requirements.txt` file.
 
 ##### Key Dependencies
 
@@ -55,11 +55,7 @@ The service is run on http://127.0.0.1:5000 locally by default.  This URL is set
 
 ### Frontend
 
-From within the `frontend` directory, run the following commands to start the client:
-
-```bash
-yarn dev
-```
+Frontend code is availabe at: 
 
 By default, the frontend will run on https://127.0.0.1:3000.
 
@@ -69,16 +65,17 @@ By default, the frontend will run on https://127.0.0.1:3000.
 ### Refere to [API Reference](./API.md)
 
 ## Testing
-In order to run tests, navigate to the backend directory and run the following commands to setup test database:
+
+Open 'setup.sh' file and update the database user name for DB_USESRNAME as per your environment. Create a test database. 
+Dump the sample psql file using the command 'psql garagesale_test < test_garagesale.psql'
+Export environment variables by running the setup.sh file:
+
+In order to run tests, navigate to root directory and run the following commands to setup test database:
 ```
+source setup.sh
 dropdb garagesale_test
 createdb garagesale_test
 psql garagesale_test < garagesale.psql
-```
-
-Then set database user name:
-```
-export DB_USERNAME='user_name'
 ```
 
 Finally run tests:
