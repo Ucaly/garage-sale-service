@@ -49,8 +49,8 @@ class GarageSaleTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(len(data['saleitems']), 8)
-        self.assertEqual(data['total_saleitems'], 8)
+        self.assertEqual(len(data['saleitems']), 7)
+        self.assertEqual(data['total_saleitems'], 7)
 
     """ TEST: @app.route('/saleitems', methods=['GET']) """
     # def test_get_saleitems_401(self):
@@ -85,16 +85,16 @@ class GarageSaleTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(len(data['users']), 2)
-        self.assertEqual(data['total_users'], 2)
+        self.assertEqual(len(data['users']), 3)
+        self.assertEqual(data['total_users'], 3)
 
     """ TEST: @app.route('/users', methods=['GET']) """
-    def test_get_users_401(self):
+    def test_get_users_403(self):
         res = self.client().get('/users', headers=self.buyer_headers)
         print(res)
         data = json.loads(res.data)
 
-        self.assertEqual(res.status_code, 401)  
+        self.assertEqual(res.status_code, 403)  
 
     """ TEST: @app.route('/users/<int:user_id>', methods=['GET']) """
     def test_get_user(self):
@@ -104,7 +104,7 @@ class GarageSaleTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(len(data['items']), 0)
+        self.assertEqual(len(data['items']), 1)
         self.assertEqual(data['user']['nickname'], 'takepon') 
 
     """ TEST: @app.route('/users/<int:user_id>', methods=['GET']) """
@@ -127,8 +127,8 @@ class GarageSaleTestCase(unittest.TestCase):
 
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
-        self.assertGreater(len(data['saleitems']), 8)
-        self.assertGreater(data['total_saleitems'], 8)
+        self.assertEqual(len(data['saleitems']), 8)
+        self.assertEqual(data['total_saleitems'], 8)
 
     """ TEST: @app.route('/saleitems/<int:item_id>', methods=['PATCH']) """
     def test_patch_saleitem(self):

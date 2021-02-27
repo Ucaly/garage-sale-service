@@ -305,6 +305,22 @@ def create_app(test_config=None):
     def index():
         return 'WELCOME TO GARAGESALE'
 
+    @app.errorhandler(401)
+    def invalid_permission(error):
+        return jsonify({
+            "success": False,
+            "error": 401,
+            "message": error.description
+        }), 401
+
+    @app.errorhandler(403)
+    def unauthorized(error):
+        return jsonify({
+            "success": False,
+            "error": 403,
+            "message": error.description
+        }), 403
+
     @app.errorhandler(404)
     def not_found(error):
         return jsonify({
