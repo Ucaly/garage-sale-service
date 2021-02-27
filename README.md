@@ -58,7 +58,7 @@ The service is run on http://127.0.0.1:5000 locally by default.
 
 ### Frontend
 
-Frontend code is availabe at: 
+Frontend code is availabe at: https://github.com/Ucaly/garage-sale-ui
 
 By default, the frontend will run on https://127.0.0.1:3000.
 
