@@ -1,11 +1,10 @@
-INSERT INTO saleitem (name, price, image, description, status) VALUES ('Small plates', '10', 'https://picsum.photos/400/600', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 0);
-INSERT INTO saleitem (name, price, image, description, status) VALUES ('Books', '5', 'https://picsum.photos/400/600', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 0);
-INSERT INTO saleitem (name, price, image, description, status) VALUES ('Desk lamp', '30', 'https://picsum.photos/400/600', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 0);
-INSERT INTO saleitem (name, price, image, description, status) VALUES ('Running shoes', '50', 'https://picsum.photos/400/600', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 0);
-INSERT INTO saleitem (name, price, image, description, status) VALUES ('Earbuds', '5', 'https://picsum.photos/400/600', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 0);
-INSERT INTO saleitem (name, price, image, description, status) VALUES ('Monitor', '65', 'https://picsum.photos/400/600', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 0);
-INSERT INTO saleitem (name, price, image, description, status) VALUES ('Plant', '3', 'https://picsum.photos/400/600', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 0);
-
-INSERT INTO user (name, email, nickname) VALUES ('Take', 'takel@mail.com', 'take-pon');
-INSERT INTO user (name, email, nickname) VALUES ('Aman', 'amandee@mail.com', 'Amany');
-INSERT INTO user (name, email, nickname) VALUES ('Ooley', 'ooley@mail.com', 'Ooley');
+INSERT INTO "saleitem" (name, price, image, description, status) VALUES ('Small plates', '10', 'https://picsum.photos/400/600', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 0);
+INSERT INTO "saleitem" (name, price, image, description, status) VALUES ('Books', '5', 'https://picsum.photos/400/600', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 0);
+INSERT INTO "saleitem" (name, price, image, description, status) VALUES ('Desk lamp', '30', 'https://picsum.photos/400/600', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 0);
+INSERT INTO "saleitem" (name, price, image, description, status) VALUES ('Running shoes', '50', 'https://picsum.photos/400/600', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 0);
+INSERT INTO "saleitem" (name, price, image, description, status) VALUES ('Earbuds', '5', 'https://picsum.photos/400/600', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 0);
+INSERT INTO "saleitem" (name, price, image, description, status) VALUES ('Monitor', '65', 'https://picsum.photos/400/600', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 0);
+INSERT INTO "saleitem" (name, price, image, description, status) VALUES ('Plant', '3', 'https://picsum.photos/400/600', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 0);
+INSERT INTO "user" (email, name, nickname) VALUES ('takel@mail.com', 'Take', 'takepon');
+INSERT INTO "user" (email, name, nickname) VALUES ('amandee@mail.com', 'Aman', 'Amany');
+INSERT INTO "user" (email, name, nickname) VALUES ('ooley@mail.com', 'Ooley', 'Ooley');
