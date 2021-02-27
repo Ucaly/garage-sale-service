@@ -11,10 +11,10 @@ class GarageSaleTestCase(unittest.TestCase):
     python -m unittest discover -s .
     """
     def setUp(self) -> None:
-        db_name = 'garagesale_test'
+        db_name = 'garagesale'
         db_user = os.environ.get('DB_USESRNAME')
+        print('db_user' + db_user)
         db_path = f'postgres://{db_user}:@localhost:5432/{db_name}'
-        # db_user = 'yukarim'
         self.app = create_app({
             'SQLALCHEMY_TRACK_MODIFICATIONS': True,
             'SQLALCHEMY_DATABASE_URI': db_path
@@ -22,14 +22,14 @@ class GarageSaleTestCase(unittest.TestCase):
         self.client = self.app.test_client
         self.database_name = db_name
         self.database_path = db_path
-        # setup_db(self.app, self.database_path)
+        setup_db(self.app, self.database_path)
         
 
-        with self.app.app_context():
-            self.db = SQLAlchemy()
-            self.db.app = self.app
-            self.db.init_app(self.app)
-            self.db.create_all()
+        # with self.app.app_context():
+        #     self.db = SQLAlchemy(self.app)
+        #     self.db.app = self.app
+        #     self.db.init_app(self.app)
+        #     self.db.create_all()
         
         seller_token = os.environ.get('SELLER_TOKEN')
         buyer_token = os.environ.get('BUYER_TOKEN')
