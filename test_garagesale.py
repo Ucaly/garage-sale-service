@@ -13,7 +13,6 @@ class GarageSaleTestCase(unittest.TestCase):
     def setUp(self) -> None:
         db_name = 'garagesale'
         db_user = os.environ.get('DB_USESRNAME')
-        print('db_user' + db_user)
         db_path = f'postgres://{db_user}:@localhost:5432/{db_name}'
         self.app = create_app({
             'SQLALCHEMY_TRACK_MODIFICATIONS': True,
@@ -50,8 +49,8 @@ class GarageSaleTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(len(data['saleitems']), 18)
-        self.assertEqual(data['total_saleitems'], 18)
+        self.assertEqual(len(data['saleitems']), 7)
+        self.assertEqual(data['total_saleitems'], 7)
 
     """ TEST: @app.route('/saleitems', methods=['GET']) """
     def test_get_saleitems_401(self):
@@ -63,13 +62,13 @@ class GarageSaleTestCase(unittest.TestCase):
 
     """ TEST: @app.route('/saleitems/<int:item_id>', methods=['GET']) """
     def test_get_saleitem(self):
-        res = self.client().get('/saleitems/8', headers=self.buyer_headers)
+        res = self.client().get('/saleitems/1', headers=self.buyer_headers)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['item']['name'], 'Painting')
-        self.assertEqual(len(data['buyers']), 1)
+        self.assertEqual(data['item']['name'], 'Books')
+        self.assertEqual(len(data['buyers']), 0)
 
     """ TEST: @app.route('/saleitems/<int:item_id>', methods=['GET']) """
     def test_get_saleitem_404(self):
@@ -86,8 +85,8 @@ class GarageSaleTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(len(data['users']), 2)
-        self.assertEqual(data['total_users'], 2)
+        self.assertEqual(len(data['users']), 3)
+        self.assertEqual(data['total_users'], 3)
 
     """ TEST: @app.route('/users', methods=['GET']) """
     def test_get_users_401(self):
@@ -106,7 +105,7 @@ class GarageSaleTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertEqual(len(data['items']), 0)
-        self.assertEqual(data['user']['nickname'], 'yukapon') 
+        self.assertEqual(data['user']['nickname'], 'Amany') 
 
     """ TEST: @app.route('/users/<int:user_id>', methods=['GET']) """
     def test_get_user_404(self):
@@ -128,19 +127,19 @@ class GarageSaleTestCase(unittest.TestCase):
 
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
-        self.assertGreater(len(data['saleitems']), 0)
-        self.assertGreater(data['total_saleitems'], 0)
+        self.assertGreater(len(data['saleitems']), 8)
+        self.assertGreater(data['total_saleitems'], 8)
 
     """ TEST: @app.route('/saleitems/<int:item_id>', methods=['PATCH']) """
     def test_patch_saleitem(self):
         patch_data = {
             "price": "100"
         }
-        res = self.client().patch('/saleitems/8', json=patch_data, headers=self.seller_headers)
+        res = self.client().patch('/saleitems/7', json=patch_data, headers=self.seller_headers)
 
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
-        self.assertEqual(data['updated'], 8)
+        self.assertEqual(data['updated'], 7)
 
     """ TEST: @app.route('/saleitems/<int:item_id>', methods=['PATCH']) """
     def test_patch_saleitem_error(self):
@@ -161,7 +160,7 @@ class GarageSaleTestCase(unittest.TestCase):
 
     """ TEST: @app.route('/saleitems/<int:item_id>', methods=['DELETE']) """
     def test_delete_saleitem(self):
-        res = self.client().delete('/saleitems/11', headers=self.seller_headers)
+        res = self.client().delete('/saleitems/7', headers=self.seller_headers)
 
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
@@ -207,7 +206,7 @@ class GarageSaleTestCase(unittest.TestCase):
         patch_data = {
             "nickname": "tester1+",
         }
-        res = self.client().patch('/users/0', json=patch_data, headers=self.seller_headers)
+        res = self.client().patch('/users/3', json=patch_data, headers=self.seller_headers)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -226,7 +225,7 @@ class GarageSaleTestCase(unittest.TestCase):
 
     """ TEST: @app.route('/users/<int:user_id>', methods=['DELETE']) """
     def test_delete_user(self):
-        res = self.client().delete('/users/2', headers=self.seller_headers)
+        res = self.client().delete('/users/3', headers=self.seller_headers)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -239,4 +238,21 @@ class GarageSaleTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 404)
 
+    """ TEST:@app.route('/saleitems/<int:item_id>/buy', methods=['POST']) """
+    def test_buy_item(self):
+        post_data = {
+            "user_id": 0,
+        }
+        res = self.client().post('/saleitems/1/buy', json=post_data, headers=self.buyer_headers)
+        data = json.loads(res.data)
 
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['updated_saleitem_id'], 1)
+
+    """ TEST:@app.route('/saleitems/<int:item_id>/buy', methods=['POST']) """
+    def test_buy_item_missing_userid(self):
+        post_data = {}
+        res = self.client().post('/saleitems/1/buy', json=post_data, headers=self.buyer_headers)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 400)

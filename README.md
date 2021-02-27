@@ -73,9 +73,8 @@ Export environment variables by running the setup.sh file:
 In order to run tests, navigate to root directory and run the following commands to setup test database:
 ```
 source setup.sh
-dropdb garagesale_test
-createdb garagesale_test
-psql garagesale_test < garagesale.psql
+createdb garagesale
+psql garagesale < garagesale.psql
 ```
 
 Finally run tests:
