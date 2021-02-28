@@ -14,6 +14,9 @@ Returns all saleitems.
 **Request parameters**
 - None
 
+**Required role**
+- None
+
 **Success responses**
 
 - `200 OK`
@@ -68,6 +71,9 @@ Returns a saleitem by id.  404 if not found.
 **Request parameters**
 - `/saleitem_id`: URI parameter. An integer representing a saleitem id. *Required*
 
+**Required role**
+- Seller or Buyer
+
 **Success responses**
 - `200 OK`
 - `404 not found`
@@ -115,6 +121,9 @@ Create a new sale item and add to database
 - `price`: string *Required*
 - `image`: string 
 - `description`: string
+
+**Required role**
+- Seller
 
 **Success responses**
 - `200 OK`
@@ -169,6 +178,9 @@ Deletes single sale item from database
 **Request parameters**
 - `/saleitem_id`: URI parameter. An integer representing a sale item id. *Required*
 
+**Required role**
+- Seller
+
 **Success responses**
 - `200 OK`
 
@@ -200,6 +212,9 @@ Updates single sale item from database
 **Request parameters**
 - `/saleitem_id`: URI parameter. An integer representing a sale item id. *Required*
 
+**Required role**
+- Seller
+
 **Success responses**
 - `200 OK`
 
@@ -230,6 +245,9 @@ Buys a single sale item
 **Request parameters**
 - `/saleitem_id`: URI parameter. An integer representing a sale item id. *Required*
 
+**Required role**
+- Buyer
+
 **Request body**
 - `user_id`: int *Required*
 
@@ -259,6 +277,9 @@ Fetches a dictionary of users
 **URL** : `/users`
 
 **Method** : `GET`
+
+**Required role**
+- Seller
 
 **Success responses**
 - `200 OK`
@@ -337,6 +358,9 @@ Returns a user.
 **Request parameters**
 - `/user_id`: URI parameter. An integer representing a user id. *Required*
 
+**Required role**
+- Seller
+
 **Success Responses**
 - `200 OK`
 
@@ -375,6 +399,9 @@ Updates a user.
 **Request parameters**
 - `/user_id`: URI parameter. An integer representing a user id. *Required*
 
+**Required role**
+- Seller
+
 **Request body**
 - `name`: string
 - `nickname`: string
@@ -410,6 +437,9 @@ Returns a user.
 **Request parameters**
 - `/user_id`: URI parameter. An integer representing a user id. *Required*
 
+**Required role**
+- Seller
+
 **Success Responses**
 - `200 OK`
 
@@ -437,6 +467,9 @@ Adds a new user and returns the added user.  If email already exists, just retur
 **URL** : `/users`
 
 **Method** : `POST`
+
+**Required role**
+- Seller or Buyer
 
 **Request body**
 - `name`: Name of user *Required*

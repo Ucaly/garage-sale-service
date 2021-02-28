@@ -2,6 +2,12 @@
 
 This project is designed for an individual who wants to sell own items online.
 
+## Live URL
+The project is deployed on heroku:
+```
+https://my-garage-sale-service.herokuapp.com/
+```
+
 ## Getting Started
 
 ### Installing Dependencies
@@ -58,10 +64,18 @@ The service is run on http://127.0.0.1:5000 locally by default.
 
 ### Frontend
 
-Frontend code is availabe at: https://github.com/Ucaly/garage-sale-ui
+Frontend is running at: https://my-garage-sale-ui.herokuapp.com
 
-By default, the frontend will run on https://127.0.0.1:3000.
+Git repo: https://github.com/Ucaly/garage-sale-ui
 
+## User roles
+
+All endpoints, except `GET /saleitmes`, are restricted to a specific role. The following roles and permissions are configured in Auth0:
+
+### Seller
+delete:saleitem, delete:user, get:saleitem, get:user, get:users, patch:saleitem, path:user, post:saleitems, post:users
+### Buyer
+get:saleitem, post:saleitem, post:users
 
 ## API Refrence
 

@@ -24,12 +24,10 @@ def create_app(test_config=None):
         'Content-Type,Authorization,authorization,true')
         response.headers.add('Access-Control-Allow-Methods',
         'GET, PATCH, POST, DELETE, OPTIONS'),
-        # response.headers.add('Access-Control-Allow-Origin', origin),
         response.headers.add('Access-Control-Allow-Domain', '*')
         return response
 
     @app.route('/saleitems', methods=['GET'])
-    # @requires_auth('get:saleitems')
     def get_saleitems():
         '''
         GET /saleitems
@@ -86,6 +84,10 @@ def create_app(test_config=None):
     @app.route('/saleitems/<int:item_id>', methods=['GET'])
     @requires_auth('get:saleitem')
     def get_item(payload, item_id):
+        '''
+        GET /saleitems/<int:item_id>
+        Permission required: Seller or Buyer
+        '''        
         if item_id is None:
             abort(400)
         saleitem = SaleItem.query.filter(SaleItem.id == item_id).first_or_404()
@@ -112,6 +114,10 @@ def create_app(test_config=None):
     @app.route('/saleitems/<int:item_id>', methods=['PATCH'])
     @requires_auth('patch:saleitem')
     def update_item(payload, item_id):
+        '''
+        PATCH /saleitems/<int:item_id>
+        Permission required: Seller
+        '''      
         if item_id is None:
             abort(404)
         body = request.get_json()
@@ -144,6 +150,10 @@ def create_app(test_config=None):
     @app.route('/saleitems/<int:item_id>', methods=['DELETE'])
     @requires_auth('delete:saleitem')
     def delete_item(payload, item_id):
+        '''
+        DELETE /saleitems/<int:item_id>
+        Permission required: Seller
+        '''        
         if item_id is None:
             abort(400)
         item_to_delete = SaleItem.query.filter(SaleItem.id == item_id).first_or_404()
@@ -158,8 +168,12 @@ def create_app(test_config=None):
             abort(422)
     
     @app.route('/saleitems/<int:item_id>/buy', methods=['POST'])
-    @requires_auth('post:saleitem')
+    @requires_auth('post:saleitem')    
     def buy_item(payload, item_id):
+        '''
+        POST /saleitems/<int:item_id>/buy
+        Permission required: Buyer
+        '''        
         if item_id is None:
             abort(400)
         body = request.get_json()
@@ -187,8 +201,12 @@ def create_app(test_config=None):
             abort(422)
 
     @app.route('/users', methods=['GET'])
-    @requires_auth('get:users')
+    @requires_auth('get:users')    
     def get_users(payload):
+        '''
+        GET /users
+        Permission required: Seller
+        '''        
         try:
             users = User.query.all()
             formatted_users = [user.format() for user in users]
@@ -204,6 +222,10 @@ def create_app(test_config=None):
     @app.route('/users', methods=['POST'])
     @requires_auth('post:users')
     def add_user(payload):
+        '''
+        POST /users
+        Permission required: Seller or Buyer
+        '''        
         body = request.get_json()
         name = body.get('name')
         nickname = body.get('nickname')
@@ -233,6 +255,10 @@ def create_app(test_config=None):
     @app.route('/users/<int:user_id>', methods=['GET'])
     @requires_auth('get:user')
     def get_user(payload, user_id):
+        '''
+        GET /users/<int:user_id>
+        Permission required: Seller or Buyer
+        '''        
         if user_id is None:
             abort(400)
         
@@ -259,6 +285,10 @@ def create_app(test_config=None):
     @app.route('/users/<int:user_id>', methods=['DELETE'])
     @requires_auth('delete:user')
     def delete_user(payload, user_id):
+        '''
+        DELETE /users/<int:user_id>
+        Permission required: Seller
+        '''        
         if user_id is None:
             abort(400)
         user_to_delete = User.query.filter(User.id == user_id).first_or_404()
@@ -276,6 +306,10 @@ def create_app(test_config=None):
     @app.route('/users/<int:user_id>', methods=['PATCH'])
     @requires_auth('patch:user')
     def update_user(payload, user_id):
+        '''
+        PATCH /users/<int:user_id>
+        Permission required: Seller
+        '''        
         if user_id is None:
             abort(400)
         
